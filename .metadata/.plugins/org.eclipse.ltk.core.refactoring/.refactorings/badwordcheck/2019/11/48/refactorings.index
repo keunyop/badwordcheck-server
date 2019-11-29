@@ -2,3 +2,12 @@
 1575030675734	Delete element
 1575030731508	Delete element
 1575031197120	Rename type 'CheckResult'
+1575069025447	Move compilation unit
+1575069031073	Delete element
+1575069040408	Rename type 'ForbiddenWords'
+1575069643898	Rename field 'FORBIDDEN_WORDS'
+1575069673772	Rename local variable 'violatedWords'
+1575069703389	Rename local variable 'fWord'
+1575069806064	Rename local variable 'fWord'
+1575070036947	Rename local variable 'subFWords'
+1575070042004	Rename local variable 'subFWord'

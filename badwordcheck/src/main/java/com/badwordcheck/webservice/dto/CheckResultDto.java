@@ -4,19 +4,21 @@ import java.util.Map;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class CheckResultDto {
-	private Map<String, Integer> badwords;
-	private Map<String, Integer> keywords;
-	
-	private CheckResultDto(Map<String, Integer> badwords, Map<String, Integer> keywords) {
-		this.badwords = badwords;
-		this.keywords = keywords;
-	}
+    private Map<String, Integer> badwords;
+    private Map<String, Integer> keywords;
 
-	public static CheckResultDto newInstance(Map<String, Integer> badwords, Map<String, Integer> keywords) {
-		return new CheckResultDto(badwords, keywords);
-	}
+    private CheckResultDto(Map<String, Integer> badwords, Map<String, Integer> keywords) {
+        this.badwords = badwords;
+        this.keywords = keywords;
+    }
+
+    public static CheckResultDto newInstance(Map<String, Integer> badwords, Map<String, Integer> keywords) {
+        return new CheckResultDto(badwords, keywords);
+    }
 }
