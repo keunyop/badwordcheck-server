@@ -2,6 +2,8 @@ package com.badwordcheck.webservice.dto;
 
 import java.util.Map;
 
+import org.springframework.util.CollectionUtils;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,6 +21,8 @@ public class CheckResultDto {
     }
 
     public static CheckResultDto newInstance(Map<String, Integer> badwords, Map<String, Integer> keywords) {
-        return new CheckResultDto(badwords, keywords);
+        // ∫Û map¿Ã∏È null return
+        return new CheckResultDto(CollectionUtils.isEmpty(badwords) ? null : badwords,
+                CollectionUtils.isEmpty(keywords) ? null : keywords);
     }
 }
