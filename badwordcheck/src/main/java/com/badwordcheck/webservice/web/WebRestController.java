@@ -1,5 +1,6 @@
 package com.badwordcheck.webservice.web;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 public class WebRestController {
     private CheckService checkService;
 
+    @CrossOrigin("*")
     @PostMapping("/check")
     public CheckResultDto check(@RequestBody
     String text) {
