@@ -1632,3 +1632,15 @@ org.eclipse.core.runtime.CoreException: No property tester contributes a propert
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:660)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:597)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1468)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2019-12-03 13:55:46.428
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.ChEOGhTi
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2019-12-03 13:55:46.434
+!MESSAGE unsubscribing from classpath changes: sts4.classpath.ChEOGhTi
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2019-12-03 13:55:46.435
+!MESSAGE subsribers = null
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2019-12-03 13:55:46.436
+!MESSAGE ClasspathListenerHandler removeClasspathListener sts4.classpath.ChEOGhTi => OK
