@@ -15,8 +15,6 @@ import com.badwordcheck.webservice.util.MapUtil;
 public class CheckService {
 
     public CheckResultDto check(String text) {
-        System.out.println("### Check text: " + text);
-
         // Remove all new line
         text = text.replace("\\n", "").replace("\\r", "");
 
@@ -26,13 +24,9 @@ public class CheckService {
         // 금지어 검사
         for (String bWord : Constants.BAD_WORDS) {
 
-            System.out.println("### bWord: " + bWord);
-
             // remove all white space
             if (text.replaceAll("\\s", "").contains(bWord)) {
                 Set<String> subBWords = _makeSubPatterns(bWord, null, null);
-
-                System.out.println("### subBWords: " + subBWords);
 
                 for (String subBWord : subBWords) {
                     if (text.contains(subBWord)) {
@@ -50,8 +44,6 @@ public class CheckService {
                 keyWords.put(word, ++cnt);
             }
         }
-
-        System.out.println("### badWords: " + badWords);
 
         return CheckResultDto.newInstance(badWords, MapUtil.sortByValueDesc(keyWords));
     }
