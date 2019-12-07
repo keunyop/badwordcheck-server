@@ -2,6 +2,7 @@ package com.badwordcheck.webservice.service;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Service;
 import com.badwordcheck.webservice.dto.CheckResultDto;
 import com.badwordcheck.webservice.util.Constants;
 import com.badwordcheck.webservice.util.MapUtil;
+
+import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
+import kr.co.shineware.nlp.komoran.core.Komoran;
 
 @Service
 public class CheckService {
@@ -38,14 +42,20 @@ public class CheckService {
         }
 
         // 키워드 검사
-        for (String word : text.split("\\s")) {
-            if (!word.isEmpty() && word.length() > 1) {
-                int cnt = keyWords.containsKey(word) ? keyWords.get(word) : 0;
-                keyWords.put(word, ++cnt);
+        for (String keyword : _analyzeKeywords(text)) {
+            if (keyword.length() > 1) {
+                int cnt = keyWords.containsKey(keyword) ? keyWords.get(keyword) : 0;
+                keyWords.put(keyword, ++cnt);
             }
         }
 
         return CheckResultDto.newInstance(badWords, MapUtil.sortByValueDesc(keyWords));
+    }
+
+    // 키워드 형태소 분석
+    private List<String> _analyzeKeywords(String text) {
+        Komoran komoran = new Komoran(DEFAULT_MODEL.LIGHT);
+        return komoran.analyze(text).getNouns();
     }
 
     /**
