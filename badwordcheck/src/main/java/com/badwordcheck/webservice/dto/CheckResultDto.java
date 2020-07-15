@@ -21,7 +21,6 @@ public class CheckResultDto {
     }
 
     public static CheckResultDto newInstance(Map<String, Integer> badwords, Map<String, Integer> keywords) {
-        // ∫Û map¿Ã∏È null return
         return new CheckResultDto(CollectionUtils.isEmpty(badwords) ? null : badwords,
                 CollectionUtils.isEmpty(keywords) ? null : keywords);
     }
