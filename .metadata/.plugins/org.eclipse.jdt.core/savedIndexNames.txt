@@ -44,6 +44,7 @@ INDEX VERSION 1.131+D:\99.KYLEE\01.개인프로젝트\49.블로그금지어검사기\server\bad
 2951431056.index
 2431707444.index
 61436394.index
+2655788070.index
 3769008867.index
 2967803814.index
 2623259949.index

@@ -19,7 +19,7 @@ import kr.co.shineware.nlp.komoran.core.Komoran;
 public class CheckService {
 
     public CheckResultDto check(String text) {
-        // Remove all new line
+        // Remove all new lines
         text = text.replace("\\n", "").replace("\\r", "");
 
         Map<String, Integer> badWords = new HashMap<>(); // 금지어 목록
