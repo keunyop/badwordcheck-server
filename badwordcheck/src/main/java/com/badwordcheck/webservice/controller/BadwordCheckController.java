@@ -1,4 +1,4 @@
-package com.badwordcheck.webservice.web;
+package com.badwordcheck.webservice.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-public class WebRestController {
+public class BadwordCheckController {
     private CheckService checkService;
 
     @CrossOrigin("*")
