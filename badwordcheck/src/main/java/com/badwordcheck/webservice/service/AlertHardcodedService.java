@@ -14,12 +14,36 @@ public class AlertHardcodedService {
     private static int idCounter = 0;
 
     static {
-	alerts.add(new Alert(++idCounter, "Correctness", false, new Date()));
-	alerts.add(new Alert(++idCounter, "Clarity", false, new Date()));
-	alerts.add(new Alert(++idCounter, "Engagement", false, new Date()));
+	alerts.add(new Alert(++idCounter, "Correctnesss", false, new Date()));
+	alerts.add(new Alert(++idCounter, "Clarityy", false, new Date()));
+	alerts.add(new Alert(++idCounter, "Engagementt", false, new Date()));
     }
 
     public List<Alert> findAll() {
 	return alerts;
+    }
+
+    public Alert deleteById(long id) {
+	Alert alert = findById(id);
+
+	if (alert == null) {
+	    return null;
+	}
+
+	if (alerts.remove(alert)) {
+	    return alert;
+	}
+
+	return null;
+    }
+
+    public Alert findById(long id) {
+	for (Alert alert : alerts) {
+	    if (alert.getId() == id) {
+		return alert;
+	    }
+	}
+
+	return null;
     }
 }
