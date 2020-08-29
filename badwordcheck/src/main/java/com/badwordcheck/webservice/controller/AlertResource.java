@@ -25,6 +25,11 @@ public class AlertResource {
 	return alertService.findAll();
     }
 
+    @GetMapping("/users/{username}/alerts/{id}")
+    public Alert getAllAlerts(@PathVariable String username, @PathVariable long id) {
+	return alertService.findById(id);
+    }
+
     @DeleteMapping("/users/{username}/alerts/{id}")
     public ResponseEntity<Void> deleteAlert(@PathVariable String username, @PathVariable long id) {
 	Alert alert = alertService.deleteById(id);
