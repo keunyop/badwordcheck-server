@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
 @NoArgsConstructor
-@ToString
-@Setter
 @AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Alert {
     private long id;
     private String description;

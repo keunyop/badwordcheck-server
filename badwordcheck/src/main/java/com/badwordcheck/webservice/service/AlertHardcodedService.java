@@ -23,6 +23,18 @@ public class AlertHardcodedService {
 	return alerts;
     }
 
+    public Alert save(Alert alert) {
+	if (alert.getId() == -1 || alert.getId() == 0) {
+	    alert.setId(++idCounter);
+	    alerts.add(alert);
+	} else {
+	    deleteById(alert.getId());
+	    alerts.add(alert);
+	}
+
+	return alert;
+    }
+
     public Alert deleteById(long id) {
 	Alert alert = findById(id);
 
