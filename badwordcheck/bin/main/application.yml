@@ -2,4 +2,4 @@ server:
   port : 8081
   
 spring:  security:    user:      name: kevin
-      password: 123
+      password: dummy
