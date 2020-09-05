@@ -1,4 +1,4 @@
-package com.badwordcheck.webservice.config.basic.auth;
+package com.badwordcheck.basic.auth;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
