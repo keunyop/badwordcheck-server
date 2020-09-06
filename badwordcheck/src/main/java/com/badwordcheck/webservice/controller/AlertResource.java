@@ -17,48 +17,45 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.badwordcheck.webservice.dto.Alert;
-import com.badwordcheck.webservice.service.AlertHardcodedService;
+import com.badwordcheck.webservice.repository.AlertJpaRepository;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
 public class AlertResource {
 
     @Autowired
-    private AlertHardcodedService alertService;
+    private AlertJpaRepository alertJpaRepository;
 
     @GetMapping("/users/{username}/alerts")
     public List<Alert> getAllAlerts(@PathVariable String username) {
-	return alertService.findAll();
+	return alertJpaRepository.findByUsername(username);
     }
 
     @GetMapping("/users/{username}/alerts/{id}")
-    public Alert getAllAlerts(@PathVariable String username, @PathVariable long id) {
-	return alertService.findById(id);
+    public Alert getAlert(@PathVariable String username, @PathVariable long id) {
+	return alertJpaRepository.findById(id).get();
     }
 
     @DeleteMapping("/users/{username}/alerts/{id}")
     public ResponseEntity<Void> deleteAlert(@PathVariable String username, @PathVariable long id) {
-	Alert alert = alertService.deleteById(id);
-
-	if (alert != null) {
-	    return ResponseEntity.noContent().build();
-	}
-
-	return ResponseEntity.notFound().build();
+	alertJpaRepository.deleteById(id);
+	return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/users/{username}/alerts/{id}")
     public ResponseEntity<Alert> updateAlert(@PathVariable String username, @PathVariable long id,
 	    @RequestBody Alert alert) {
 
-	Alert alertUpdated = alertService.save(alert);
+	Alert alertUpdated = alertJpaRepository.save(alert);
 	return new ResponseEntity<Alert>(alertUpdated, HttpStatus.OK);
     }
 
     @PostMapping("/users/{username}/alerts")
-    public ResponseEntity<Void> insertAlert(@PathVariable String username, @RequestBody Alert alert) {
+    public ResponseEntity<Void> createAlert(@PathVariable String username, @RequestBody Alert alert) {
 
-	Alert createdAlert = alertService.save(alert);
+	alert.setUsername(username);
+
+	Alert createdAlert = alertJpaRepository.save(alert);
 
 	URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdAlert.getId())
 		.toUri();

@@ -1,8 +1,4 @@
-server:
-  port : 8081
-  
-#spring:#  security:#    user:#      name: kevin
-#      password: dummy
+server.port : 8081
 
 jwt:
   signing.key.secret: mySecret
@@ -10,3 +6,7 @@ jwt:
   refresh.token.uri: /refresh
   http.request.header: Authorization
   token.expiration.in.seconds: 604800
+  
+spring:
+  jpa.show-sql: true
+  h2.console.enabled: true
