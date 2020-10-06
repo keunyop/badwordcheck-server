@@ -62,5 +62,4 @@ public class AlertResource {
 
 	return ResponseEntity.created(uri).build();
     }
-
 }

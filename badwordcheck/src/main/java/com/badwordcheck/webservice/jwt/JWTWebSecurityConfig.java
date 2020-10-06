@@ -55,8 +55,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 	httpSecurity.csrf().disable().exceptionHandling()
 		.authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and().sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().anyRequest()
-		.authenticated();
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+		.antMatchers("/checkbadwords").permitAll().anyRequest().authenticated();
 
 	httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

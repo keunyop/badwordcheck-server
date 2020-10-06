@@ -19,140 +19,143 @@ import kr.co.shineware.nlp.komoran.core.Komoran;
 public class CheckService {
 
     public CheckResultDto check(String text) {
-        // Remove all new lines
-        text = text.replace("\\n", "").replace("\\r", "");
 
-        Map<String, Integer> badWords = new HashMap<>(); // 금지어 목록
-        Map<String, Integer> keyWords = new HashMap<>(); // 키워드 목록
+	System.out.println(text);
 
-        // 금지어 검사
-        for (String bWord : Constants.BAD_WORDS) {
+	// Remove all new lines
+	text = text.replace("\\n", "").replace("\\r", "");
 
-            // remove all white space
-            if (text.replaceAll("\\s", "").contains(bWord)) {
-                Set<String> subBWords = _makeSubPatterns(bWord, null, null);
+	Map<String, Integer> badWords = new HashMap<>(); // 금지어 목록
+	Map<String, Integer> keyWords = new HashMap<>(); // 키워드 목록
 
-                for (String subBWord : subBWords) {
-                    if (text.contains(subBWord)) {
-                        int cnt = badWords.containsKey(subBWord) ? badWords.get(subBWord) : 0;
-                        badWords.put(subBWord, ++cnt);
-                    }
-                }
-            }
-        }
+	// 금지어 검사
+	for (String bWord : Constants.BAD_WORDS) {
 
-        // 키워드 검사
-        for (String keyword : _analyzeKeywords(text)) {
-            if (keyword.length() > 1) {
-                int cnt = keyWords.containsKey(keyword) ? keyWords.get(keyword) : 0;
-                keyWords.put(keyword, ++cnt);
-            }
-        }
+	    // remove all white space
+	    if (text.replaceAll("\\s", "").contains(bWord)) {
+		Set<String> subBWords = _makeSubPatterns(bWord, null, null);
 
-        return CheckResultDto.newInstance(badWords, MapUtil.sortByValueDesc(keyWords));
+		for (String subBWord : subBWords) {
+		    if (text.contains(subBWord)) {
+			int cnt = badWords.containsKey(subBWord) ? badWords.get(subBWord) : 0;
+			badWords.put(subBWord, ++cnt);
+		    }
+		}
+	    }
+	}
+
+	// 키워드 검사
+	for (String keyword : _analyzeKeywords(text)) {
+	    if (keyword.length() > 1) {
+		int cnt = keyWords.containsKey(keyword) ? keyWords.get(keyword) : 0;
+		keyWords.put(keyword, ++cnt);
+	    }
+	}
+
+	return CheckResultDto.newInstance(badWords, MapUtil.sortByValueDesc(keyWords));
     }
 
     // 키워드 형태소 분석
     private List<String> _analyzeKeywords(String text) {
-        Komoran komoran = new Komoran(DEFAULT_MODEL.LIGHT);
-        return komoran.analyze(text).getNouns();
+	Komoran komoran = new Komoran(DEFAULT_MODEL.LIGHT);
+	return komoran.analyze(text).getNouns();
     }
 
     /**
-     * Recursive하게 다양한 금칙어 패턴 생성 
+     * Recursive하게 다양한 금칙어 패턴 생성
      */
     private Set<String> _makeSubPatterns(String bWord, String prefix, String postfix) {
-        Set<String> patternSet = new HashSet<>();
+	Set<String> patternSet = new HashSet<>();
 
-        /**
-         * 금지어 자체 & 금지어 전체 뛰어쓰기
-         */
-        if (prefix == null && postfix == null) {
-            // 금지어 차제
-            patternSet.add(bWord);
+	/**
+	 * 금지어 자체 & 금지어 전체 뛰어쓰기
+	 */
+	if (prefix == null && postfix == null) {
+	    // 금지어 차제
+	    patternSet.add(bWord);
 
-            // 금지어 전체 뛰어쓰기
-            patternSet.add(_appendSpaces(bWord));
-        }
+	    // 금지어 전체 뛰어쓰기
+	    patternSet.add(_appendSpaces(bWord));
+	}
 
-        /**
-         * 금지어 그외 나올 수 있는 모든 케이스
-         */
-        if (bWord.length() > 1) {
-            for (int i = 1; i < bWord.length(); i++) {
-                StringBuilder patternBuilder = new StringBuilder();
+	/**
+	 * 금지어 그외 나올 수 있는 모든 케이스
+	 */
+	if (bWord.length() > 1) {
+	    for (int i = 1; i < bWord.length(); i++) {
+		StringBuilder patternBuilder = new StringBuilder();
 
-                if (prefix != null && !prefix.isEmpty()) {
-                    patternBuilder.append(prefix);
-                }
+		if (prefix != null && !prefix.isEmpty()) {
+		    patternBuilder.append(prefix);
+		}
 
-                int cnt = 1;
-                for (char c : bWord.toCharArray()) {
-                    patternBuilder.append(c);
+		int cnt = 1;
+		for (char c : bWord.toCharArray()) {
+		    patternBuilder.append(c);
 
-                    if (cnt == i) {
-                        patternBuilder.append(" ");
-                    }
+		    if (cnt == i) {
+			patternBuilder.append(" ");
+		    }
 
-                    cnt++;
-                }
+		    cnt++;
+		}
 
-                if (postfix != null && !postfix.isEmpty()) {
-                    patternBuilder.append(postfix);
-                }
+		if (postfix != null && !postfix.isEmpty()) {
+		    patternBuilder.append(postfix);
+		}
 
-                String pattern = patternBuilder.toString();
+		String pattern = patternBuilder.toString();
 
-                patternSet.add(pattern);
+		patternSet.add(pattern);
 
-                String[] wordGroup = pattern.split(" ");
+		String[] wordGroup = pattern.split(" ");
 
-                for (int j = 0; j < wordGroup.length; j++) {
+		for (int j = 0; j < wordGroup.length; j++) {
 
-                    if (wordGroup[j].length() > 2) {
-                        StringBuilder prefixBuilder = new StringBuilder();
-                        if (j != 0) {
-                            for (int k = 0; k < j; k++) {
-                                prefixBuilder.append(wordGroup[k]);
-                                prefixBuilder.append(" ");
-                            }
-                        }
+		    if (wordGroup[j].length() > 2) {
+			StringBuilder prefixBuilder = new StringBuilder();
+			if (j != 0) {
+			    for (int k = 0; k < j; k++) {
+				prefixBuilder.append(wordGroup[k]);
+				prefixBuilder.append(" ");
+			    }
+			}
 
-                        StringBuilder postfixBuilder = new StringBuilder();
-                        if (j != wordGroup.length - 1) {
-                            for (int k = j + 1; k <= wordGroup.length - 1; k++) {
-                                postfixBuilder.append(" ");
-                                postfixBuilder.append(wordGroup[k]);
-                            }
-                        }
+			StringBuilder postfixBuilder = new StringBuilder();
+			if (j != wordGroup.length - 1) {
+			    for (int k = j + 1; k <= wordGroup.length - 1; k++) {
+				postfixBuilder.append(" ");
+				postfixBuilder.append(wordGroup[k]);
+			    }
+			}
 
-                        patternSet.addAll(
-                                _makeSubPatterns(wordGroup[j], prefixBuilder.toString(), postfixBuilder.toString()));
-                    }
-                }
-            }
-        }
+			patternSet.addAll(
+				_makeSubPatterns(wordGroup[j], prefixBuilder.toString(), postfixBuilder.toString()));
+		    }
+		}
+	    }
+	}
 
-        return patternSet;
+	return patternSet;
     }
 
     /**
-     * 각 글자에 뛰어쓰기 추가 
+     * 각 글자에 뛰어쓰기 추가
      */
     private String _appendSpaces(String word) {
-        StringBuilder allSpaceBuilder = new StringBuilder();
+	StringBuilder allSpaceBuilder = new StringBuilder();
 
-        int cnt = 1;
-        for (char c : word.toCharArray()) {
-            allSpaceBuilder.append(c);
+	int cnt = 1;
+	for (char c : word.toCharArray()) {
+	    allSpaceBuilder.append(c);
 
-            if (cnt < word.length()) {
-                allSpaceBuilder.append(" ");
-            }
+	    if (cnt < word.length()) {
+		allSpaceBuilder.append(" ");
+	    }
 
-            cnt++;
-        }
+	    cnt++;
+	}
 
-        return allSpaceBuilder.toString();
+	return allSpaceBuilder.toString();
     }
 }
